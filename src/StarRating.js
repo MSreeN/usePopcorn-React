@@ -4,6 +4,7 @@ const containerStyle = {
   display: "flex",
   alignItems: "center",
   gap: "16px",
+  backgroundColor: "white",
 };
 
 const starContainerStyle = {
@@ -14,23 +15,27 @@ const starContainerStyle = {
 const textStyle = {
   lineHeight: "0",
   margin: "0",
+  color: "black",
 };
 
 export default function StarRating({ maxRating = 5 }) {
   const [rating, setRating] = useState(0);
+  const [tempRating, setTempRating] = useState(0);
   return (
     <div style={containerStyle}>
       {Array.from({ length: maxRating }).map((_, i) => (
         <Star
           i={i}
           rating={rating}
-          full={rating >= i + 1}
+          full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
           style={starContainerStyle}
           key={i}
           onClick={() => setRating(i + 1)}
+          onEnter={() => setTempRating(i + 1)}
+          onLeave={() => setTempRating(0)}
         ></Star>
       ))}
-      <p style={textStyle}>{rating || ""}</p>
+      <p style={textStyle}>{tempRating || rating || ""}</p>
     </div>
   );
 }
@@ -40,9 +45,14 @@ const starStyle = {
   width: "48px",
 };
 
-function Star({ onClick, full }) {
+function Star({ onClick, full, onEnter, onLeave }) {
   return (
-    <span style={starStyle} onClick={onClick}>
+    <span
+      style={starStyle}
+      onClick={onClick}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
       {full ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
