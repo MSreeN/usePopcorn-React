@@ -12,15 +12,21 @@ const starContainerStyle = {
   gap: "4px",
 };
 
-const textStyle = {
-  lineHeight: "0",
-  margin: "0",
-  color: "black",
-};
-
-export default function StarRating({ maxRating = 5 }) {
+export default function StarRating({
+  maxRating = 5,
+  color = "#fcc419",
+  size = "48",
+  className = "",
+  message = [],
+}) {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
+  const textStyle = {
+    lineHeight: "0",
+    margin: "0",
+    color: color,
+    fontSize: `${size / 1.5}px`,
+  };
   return (
     <div style={containerStyle}>
       {Array.from({ length: maxRating }).map((_, i) => (
@@ -33,19 +39,26 @@ export default function StarRating({ maxRating = 5 }) {
           onClick={() => setRating(i + 1)}
           onEnter={() => setTempRating(i + 1)}
           onLeave={() => setTempRating(0)}
+          color={color}
+          size={size}
         ></Star>
       ))}
-      <p style={textStyle}>{tempRating || rating || ""}</p>
+      <p style={textStyle}>
+        {message.length === maxRating
+          ? message[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ""}
+      </p>
     </div>
   );
 }
 
-const starStyle = {
-  height: "48px",
-  width: "48px",
-};
-
-function Star({ onClick, full, onEnter, onLeave }) {
+function Star({ onClick, full, onEnter, onLeave, color, size }) {
+  const starStyle = {
+    height: "48px",
+    width: "48px",
+    color: color,
+    fontSize: size,
+  };
   return (
     <span
       style={starStyle}
@@ -56,9 +69,9 @@ function Star({ onClick, full, onEnter, onLeave }) {
       {full ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill="#000"
+          fill={color}
           viewBox="0 0 24 24"
-          stroke="#000"
+          stroke={color}
         >
           <path
             strokeLinecap="round"
@@ -71,7 +84,7 @@ function Star({ onClick, full, onEnter, onLeave }) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
-          fill="none"
+          fill="white"
           stroke="#000"
         >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
