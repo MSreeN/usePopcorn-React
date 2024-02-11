@@ -11,6 +11,7 @@ root.render(
     {/* <StarRating maxRating="10" /> */}
     <StarRating
       maxRating="5"
+      defaultRating={3}
       // color="yellow"
       message={["worst", "okay", "good", "super", "excellent"]}
     />
