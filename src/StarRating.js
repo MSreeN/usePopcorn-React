@@ -19,6 +19,7 @@ export default function StarRating({
   className = "",
   message = [],
   defaultRating = [],
+  onRating,
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
@@ -28,6 +29,11 @@ export default function StarRating({
     color: color,
     fontSize: `${size / 1.5}px`,
   };
+
+  function handleRating(rating) {
+    setRating(rating);
+    onRating(rating);
+  }
   return (
     <div style={containerStyle}>
       {Array.from({ length: maxRating }).map((_, i) => (
@@ -37,7 +43,7 @@ export default function StarRating({
           full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
           style={starContainerStyle}
           key={i}
-          onClick={() => setRating(i + 1)}
+          onClick={() => handleRating(i + 1)}
           onEnter={() => setTempRating(i + 1)}
           onLeave={() => setTempRating(0)}
           color={color}
