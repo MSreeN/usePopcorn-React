@@ -20,7 +20,7 @@ root.render(
   <React.StrictMode>
     {/* <StarRating maxRating="10" /> */}
     <StarRating
-      maxRating="5"
+      maxRating="6"
       defaultRating={3}
       // color="yellow"
       message={["worst", "okay", "good", "super", "excellent"]}
