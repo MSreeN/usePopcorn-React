@@ -1,29 +1,33 @@
 import { useState } from "react";
 
 export default function TextExpander({
+  expanded = false,
   children,
-  collapsedNumWords,
-  expandButtonText,
-  collapseButtonText,
-  buttonColor,
+  collapsedNumWords = 20,
+  expandButtonText = "....Show more",
+  collapseButtonText = "....Show less",
+  buttonColor = "red",
+  className,
 }) {
-  const [isCollapse, setIsCollapse] = useState(true);
+  const [isCollapse, setIsCollapse] = useState(expanded);
   console.log(isCollapse);
+  const buttonStyle = {
+    background: "none",
+    border: "none",
+    font: "inherit",
+    cursor: "pointers",
+    marginLeft: "6px",
+    color: buttonColor,
+  };
   return (
-    <div>
-      {isCollapse
-        ? children.slice(0, collapsedNumWords) + "....."
-        : children + "....."}
-      {isCollapse || (
-        <a style={{ color: buttonColor }} onClick={() => setIsCollapse(true)}>
-          {collapseButtonText}
-        </a>
-      )}
-      {isCollapse && (
-        <a style={{ color: buttonColor }} onClick={() => setIsCollapse(false)}>
-          {expandButtonText}
-        </a>
-      )}
+    <div className={className}>
+      {isCollapse ? children : children.slice(0, collapsedNumWords)}
+      <button
+        style={buttonStyle}
+        onClick={() => setIsCollapse((prev) => !prev)}
+      >
+        {isCollapse ? collapseButtonText : expandButtonText}
+      </button>
     </div>
   );
 }
