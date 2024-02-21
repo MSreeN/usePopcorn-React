@@ -54,6 +54,7 @@ export default function StarRating({
           full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
           style={starContainerStyle}
           key={i}
+          //React will make use of eventDelegation concept while handling event, it uses root element that we see in index.js and attaches all the events of every kind to it.
           onClick={() => handleRating(i + 1)}
           onEnter={() => setTempRating(i + 1)}
           onLeave={() => setTempRating(0)}
