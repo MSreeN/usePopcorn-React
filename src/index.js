@@ -6,15 +6,15 @@ import StarRating from "./StarRating";
 import reportWebVitals from "./reportWebVitals";
 import TextExpander from "./TextExpander";
 
-export default function Test() {
-  const [rating, setRating] = useState(0);
-  return (
-    <div>
-      <StarRating onRating={setRating} maxRating={10} />
-      <p>This movie was rated {rating}</p>
-    </div>
-  );
-}
+// export default function Test() {
+//   const [rating, setRating] = useState(0);
+//   return (
+//     <div>
+//       <StarRating onRating={setRating} maxRating={10} />
+//       <p>This movie was rated {rating}</p>
+//     </div>
+//   );
+// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -26,7 +26,7 @@ root.render(
       // color="yellow"
       message={["worst", "okay", "good", "super", "excellent"]}
     /> */}
-    <Test />
+    {/* <Test />
     <TextExpander>
       Space travel is the ultimate adventure! Imagine soaring past the stars and
       exploring new worlds. It's the stuff of dreams and science fiction, but
@@ -53,8 +53,8 @@ root.render(
       have inspired future generations to keep reaching for the stars. Space
       travel is a pretty cool thing to think about. Who knows what we'll
       discover next!
-    </TextExpander>
-    {/* <App /> */}
+    </TextExpander> */}
+    <App />
   </React.StrictMode>
 );
 
