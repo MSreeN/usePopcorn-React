@@ -48,6 +48,8 @@ const tempWatchedData = [
 ];
 
 export default function App() {
+  // fetch()
+  //Api key 9b62ec01
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   return (
