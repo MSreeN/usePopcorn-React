@@ -47,9 +47,15 @@ const tempWatchedData = [
   },
 ];
 
-export default function App() {
+const KEY = "9b62ec01";
+
+export default async function App() {
   // fetch()
   //Api key 9b62ec01
+  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=pulp+fiction`)
+    .then((res) => res.json())
+    .then((data) => console.log(data));
+
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   return (
