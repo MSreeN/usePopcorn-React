@@ -50,17 +50,20 @@ const tempWatchedData = [
 const KEY = "9b62ec01";
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   // fetch()
   //Api key 9b62ec01
   useEffect(function () {
     async function fetchMovies() {
+      setIsLoading(true);
       const res = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&s=pulp+fiction`
       );
       const data = await res.json();
       setMovies(data.Search);
+      setIsLoading(false);
     }
     fetchMovies();
   }, []);
@@ -73,9 +76,7 @@ export default function App() {
         <Results movies={movies} />
       </Nav>
       <Main>
-        <Box>
-          <MovieList movies={movies} />
-        </Box>
+        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
         <Box>
           <WatchedSummary watched={watched} />
           <WatchedMovieList watched={watched} />
@@ -83,6 +84,10 @@ export default function App() {
       </Main>
     </>
   );
+}
+
+function Loader() {
+  return <p>Loading</p>;
 }
 function Nav({ children }) {
   return <nav className="nav-bar">{children}</nav>;
