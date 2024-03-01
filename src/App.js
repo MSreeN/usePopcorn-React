@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tempMovieData = [
   {
@@ -49,15 +49,22 @@ const tempWatchedData = [
 
 const KEY = "9b62ec01";
 
-export default async function App() {
-  // fetch()
-  //Api key 9b62ec01
-  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=pulp+fiction`)
-    .then((res) => res.json())
-    .then((data) => console.log(data));
-
+export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  // fetch()
+  //Api key 9b62ec01
+  useEffect(function () {
+    async function fetchMovies() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=pulp+fiction`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+    }
+    fetchMovies();
+  }, []);
+
   return (
     <>
       <Nav>
