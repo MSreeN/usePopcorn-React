@@ -173,17 +173,29 @@ function MovieDetails({ movieId, onCloseMovie }) {
   return (
     <div className="details">
       <header>
+        <button className="btn-back" onClick={onCloseMovie}>
+          &larr;
+        </button>
         <img src={poster} alt={`Poster of ${title} movie`} />
         <div className="details-overview">
           <h2>{title}</h2>
           <p>
             {released} &bull; {runtime}
           </p>
+          <p>{genre}</p>
+          <p>
+            <span>s⭐</span>
+            {imdbRating} IMDB rating
+          </p>
         </div>
-        <button className="btn-back" onClick={onCloseMovie}>
-          &larr;
-        </button>
       </header>
+      <section>
+        <p>
+          <em>{plot}</em>
+        </p>
+        <p>Starring {actors}</p>
+        <p>Starring {director}</p>
+      </section>
       {/* <span>{movieDetails}</span> */}
     </div>
   );
