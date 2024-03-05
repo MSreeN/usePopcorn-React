@@ -140,26 +140,51 @@ function Loader() {
 }
 
 function MovieDetails({ movieId, onCloseMovie }) {
-  const [movieDetails, setMovieDetails] = useState(null);
+  const [movieDetails, setMovieDetails] = useState({});
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movieDetails;
   useEffect(
     function () {
       async function fetchData() {
-        const res = await fetch(`http://www.omdbapi.com/?i=${movieId}`);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${movieId}`
+        );
         const data = await res.json();
         console.log("data", data);
         setMovieDetails(data);
       }
+      fetchData();
     },
+
     [movieId]
   );
 
   console.log(movieDetails);
   return (
     <div className="details">
-      <button className="btn-back" onClick={onCloseMovie}>
-        &larr;
-      </button>
-      {movieId}
+      <header>
+        <img src={poster} alt={`Poster of ${title} movie`} />
+        <div className="details-overview">
+          <h2>{title}</h2>
+          <p>
+            {released} &bull; {runtime}
+          </p>
+        </div>
+        <button className="btn-back" onClick={onCloseMovie}>
+          &larr;
+        </button>
+      </header>
+      {/* <span>{movieDetails}</span> */}
     </div>
   );
 }
