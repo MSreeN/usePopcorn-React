@@ -1,5 +1,6 @@
 import { logDOM } from "@testing-library/react";
 import { useEffect, useState } from "react";
+import StarRating from "./StarRating";
 
 const tempMovieData = [
   {
@@ -141,6 +142,7 @@ function Loader() {
 
 function MovieDetails({ movieId, onCloseMovie }) {
   const [movieDetails, setMovieDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const {
     Title: title,
     Year: year,
@@ -156,12 +158,14 @@ function MovieDetails({ movieId, onCloseMovie }) {
   useEffect(
     function () {
       async function fetchData() {
+        setIsLoading(true);
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${KEY}&i=${movieId}`
         );
         const data = await res.json();
         console.log("data", data);
         setMovieDetails(data);
+        setIsLoading(false);
       }
       fetchData();
     },
@@ -172,24 +176,31 @@ function MovieDetails({ movieId, onCloseMovie }) {
   console.log(movieDetails);
   return (
     <div className="details">
-      <header>
-        <button className="btn-back" onClick={onCloseMovie}>
-          &larr;
-        </button>
-        <img src={poster} alt={`Poster of ${title} movie`} />
-        <div className="details-overview">
-          <h2>{title}</h2>
-          <p>
-            {released} &bull; {runtime}
-          </p>
-          <p>{genre}</p>
-          <p>
-            <span>s⭐</span>
-            {imdbRating} IMDB rating
-          </p>
-        </div>
-      </header>
+      {!isLoading ? (
+        <header>
+          <button className="btn-back" onClick={onCloseMovie}>
+            &larr;
+          </button>
+          <img src={poster} alt={`Poster of ${title} movie`} />
+          <div className="details-overview">
+            <h2>{title}</h2>
+            <p>
+              {released} &bull; {runtime}
+            </p>
+            <p>{genre}</p>
+            <p>
+              <span>s⭐</span>
+              {imdbRating} IMDB rating
+            </p>
+          </div>
+        </header>
+      ) : (
+        <Loader />
+      )}
       <section>
+        <div className="rating">
+          <StarRating maxRating={10} size={24} />
+        </div>
         <p>
           <em>{plot}</em>
         </p>

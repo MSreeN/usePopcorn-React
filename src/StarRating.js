@@ -5,7 +5,7 @@ const containerStyle = {
   display: "flex",
   alignItems: "center",
   gap: "16px",
-  backgroundColor: "white",
+  // backgroundColor: "white",
 };
 
 const starContainerStyle = {
@@ -30,7 +30,7 @@ export default function StarRating({
   className = "",
   message = [],
   defaultRating = [],
-  onRating,
+  onRating = () => {},
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
