@@ -66,6 +66,11 @@ export default function App() {
     setSelectedId(id === selectedId ? null : id);
   }
 
+  function handleAddWatched(movie) {
+    setWatched((mov) => [...mov, movie]);
+    console.log(watched);
+  }
+
   function handleCloseMovie() {
     setSelectedId(null);
   }
@@ -122,6 +127,7 @@ export default function App() {
             <MovieDetails
               movieId={selectedId}
               onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatched}
             />
           ) : (
             <>
@@ -140,7 +146,7 @@ function Loader() {
   return <p>Loading</p>;
 }
 
-function MovieDetails({ movieId, onCloseMovie }) {
+function MovieDetails({ movieId, onCloseMovie, onAddWatched }) {
   const [movieDetails, setMovieDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -173,6 +179,19 @@ function MovieDetails({ movieId, onCloseMovie }) {
     [movieId]
   );
 
+  function handleAdd() {
+    const newWatchedMovie = {
+      imdbId: movieId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+    };
+    console.log(newWatchedMovie);
+    onAddWatched(newWatchedMovie);
+  }
+
   console.log(movieDetails);
   return (
     <div className="details">
@@ -189,7 +208,7 @@ function MovieDetails({ movieId, onCloseMovie }) {
             </p>
             <p>{genre}</p>
             <p>
-              <span>s⭐</span>
+              <span>⭐</span>
               {imdbRating} IMDB rating
             </p>
           </div>
@@ -200,6 +219,9 @@ function MovieDetails({ movieId, onCloseMovie }) {
       <section>
         <div className="rating">
           <StarRating maxRating={10} size={24} />
+          <button className="btn-add" onClick={handleAdd}>
+            Add to list
+          </button>
         </div>
         <p>
           <em>{plot}</em>
@@ -381,7 +403,7 @@ function WatchedMovie({ movie }) {
         </p>
         <p>
           <span>🌟</span>
-          <span>{movie.userRating}</span>
+          <span>{movie.imdbRating}</span>
         </p>
         <p>
           <span>⏳</span>
