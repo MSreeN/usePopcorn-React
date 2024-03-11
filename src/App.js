@@ -100,6 +100,7 @@ export default function App() {
             setError("");
             return;
           }
+          setError("");
         } catch (err) {
           setError(err.message);
         } finally {
@@ -197,6 +198,20 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
     },
 
     [movieId]
+  );
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") onCloseMovie();
+        console.log("keypress");
+      }
+      document.addEventListener("keydown", callback);
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovie]
   );
 
   useEffect(
