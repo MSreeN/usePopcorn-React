@@ -52,7 +52,7 @@ const tempWatchedData = [
 const KEY = "9b62ec01";
 
 export default function App() {
-  const [query, setQuery] = useState("pulp+fiction");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,6 +84,11 @@ export default function App() {
       const controller = new AbortController();
       async function fetchMovies() {
         try {
+          if (!query) {
+            console.log("Search to see results");
+            throw new Error("Search to see results");
+          }
+
           setIsLoading(true);
           const res = await fetch(
             `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
@@ -92,6 +97,11 @@ export default function App() {
           if (!res.ok)
             throw new Error("Something went wrong with fetching movies");
           const data = await res.json();
+
+          if (data?.Response === "False") {
+            console.log(data.Error);
+            throw new Error(data.Error);
+          }
           setMovies(data.Search);
           setIsLoading(false);
 
@@ -102,7 +112,9 @@ export default function App() {
           }
           setError("");
         } catch (err) {
+          console.log("catch executed with ", err);
           setError(err.message);
+          setMovies([]);
         } finally {
           setIsLoading(false);
         }
@@ -169,7 +181,6 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
     (mov) => mov.imdbId === movieId
   )?.userRating;
 
-  console.log(watched, isWatched);
   const {
     Title: title,
     Year: year,
@@ -290,8 +301,9 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
 }
 
 function Error({ message }) {
+  console.log("From Error component ", message);
   return (
-    <p class="error">
+    <p className="error">
       <span>{message}</span>
     </p>
   );
