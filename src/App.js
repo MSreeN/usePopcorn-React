@@ -1,5 +1,6 @@
 import { logDOM } from "@testing-library/react";
 import { useEffect, useState } from "react";
+import CurrencyConverter from "./CurrencyConverter";
 import StarRating from "./StarRating";
 
 const tempMovieData = [
@@ -130,6 +131,7 @@ export default function App() {
 
   return (
     <>
+      <CurrencyConverter />
       <Nav>
         <Logo />
         <Search query={query} setQuery={setQuery} />
