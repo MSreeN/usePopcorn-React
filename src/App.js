@@ -96,6 +96,8 @@ export default function App() {
             { signal: controller.signal }
           );
           if (!res.ok)
+            // can't create state in loops, it will break the link between hooks
+            //  const [a, setA] = useState();
             throw new Error("Something went wrong with fetching movies");
           const data = await res.json();
 
