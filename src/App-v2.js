@@ -49,6 +49,8 @@ export default function App() {
             { signal: controller.signal }
           );
           if (!res.ok)
+            // can't create state in loops, it will break the link between hooks
+            //  const [a, setA] = useState();
             throw new Error("Something went wrong with fetching movies");
           const data = await res.json();
 
@@ -148,6 +150,7 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
     Director: director,
     Genre: genre,
   } = movieDetails;
+
   useEffect(
     function () {
       async function fetchData() {
@@ -165,6 +168,11 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
 
     [movieId]
   );
+
+  if (imdbRating > 8.0) {
+    console.log("returning");
+    return;
+  }
 
   useEffect(
     function () {
