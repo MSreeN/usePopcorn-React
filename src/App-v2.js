@@ -151,6 +151,11 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movieDetails;
 
+  if (Number(imdbRating) > 8) {
+    console.log("returning");
+    return <p>Hello</p>;
+  }
+
   useEffect(
     function () {
       async function fetchData() {
@@ -168,11 +173,6 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
 
     [movieId]
   );
-
-  if (imdbRating > 8.0) {
-    console.log("returning");
-    return;
-  }
 
   useEffect(
     function () {
