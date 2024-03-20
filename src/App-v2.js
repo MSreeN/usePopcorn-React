@@ -151,10 +151,9 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movieDetails;
 
-  if (Number(imdbRating) > 8) {
-    console.log("returning");
-    return <p>Hello</p>;
-  }
+  const imdbRat = imdbRating > 8;
+  const [avgRating, setAvgRating] = useState(0);
+  console.log(avgRating);
 
   useEffect(
     function () {
@@ -232,10 +231,12 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
               {imdbRating} IMDB rating
             </p>
           </div>
+          <p>{avgRating}</p>
         </header>
       ) : (
         <Loader />
       )}
+
       <section>
         <div className="rating">
           {!isWatched ? (
