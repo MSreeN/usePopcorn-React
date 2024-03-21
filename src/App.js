@@ -8,13 +8,16 @@ const KEY = "9b62ec01";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const tempQuery = "Interstellar";
   const [selectedId, setSelectedId] = useState(null);
   // fetch()
   //Api key 9b62ec01
+  const [watched, setWatched] = useState(function () {
+    const watched = JSON.parse(localStorage.getItem("watched"));
+    return watched ? watched : [];
+  });
 
   function handleSelectMovie(id) {
     setSelectedId(id === selectedId ? null : id);
@@ -32,6 +35,13 @@ export default function App() {
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((mov) => mov.imdbId !== id));
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   useEffect(
     function () {
@@ -80,7 +90,6 @@ export default function App() {
     },
     [query]
   );
-  console.log("selectedId", selectedId);
 
   return (
     <>
@@ -93,7 +102,7 @@ export default function App() {
       <Main>
         <Box>
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
-          {error && <Error message={error} />}
+          {error && <ErrorMessage message={error} />}
           {isLoading && !error && <Loader />}
           {isLoading || (
             <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
@@ -199,7 +208,6 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
     };
-    console.log(newWatchedMovie);
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
@@ -232,7 +240,7 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
         <div className="rating">
           {!isWatched ? (
             <>
-              <StarRating maxRating={10} size={24} onRating={setUserRating} />
+              <StarRating maxRating={10} size={"24"} onRating={setUserRating} />
               {userRating > 0 && (
                 <button className="btn-add" onClick={handleAdd}>
                   Add to list
@@ -255,7 +263,7 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
   );
 }
 
-function Error({ message }) {
+function ErrorMessage({ message }) {
   console.log("From Error component ", message);
   return (
     <p className="error">
@@ -388,9 +396,9 @@ function WatchedMovieList({ watched, onHandleDelete }) {
     <ul className="list">
       {watched.map((movie) => (
         <WatchedMovie
+          key={movie.imdbId}
           onHandleDelete={onHandleDelete}
           movie={movie}
-          key={movie.imdbID}
         />
       ))}
     </ul>

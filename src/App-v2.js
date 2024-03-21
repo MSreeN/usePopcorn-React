@@ -82,7 +82,6 @@ export default function App() {
     },
     [query]
   );
-  console.log("selectedId", selectedId);
 
   return (
     <>
@@ -95,7 +94,7 @@ export default function App() {
       <Main>
         <Box>
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
-          {error && <Error message={error} />}
+          {error && <ErrorMessage message={error} />}
           {isLoading && !error && <Loader />}
           {isLoading || (
             <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
@@ -264,7 +263,7 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
   );
 }
 
-function Error({ message }) {
+function ErrorMessage({ message }) {
   console.log("From Error component ", message);
   return (
     <p className="error">

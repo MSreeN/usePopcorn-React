@@ -12,16 +12,13 @@ export default function CurrencyConverter() {
   useEffect(
     function () {
       async function fetchData() {
-        console.log("use Effect executed");
         if (!amount) return;
         const response = await fetch(
           `https://api.frankfurter.app/latest?amount=${amount}&from=${curr1}&to=${curr2}`
         );
         const data = await response.json();
         if (!response.ok) return;
-        console.log("response from api", data);
         setOutput(data.rates[curr2]);
-        console.log(output);
       }
       fetchData();
     },
