@@ -140,6 +140,7 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
   const [movieDetails, setMovieDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState();
+  const countRef = useRef("");
 
   const isWatched = watched.map((mov) => mov.imdbId).includes(movieId);
   const watchedUserRating = watched.find(
@@ -178,6 +179,13 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
 
   useEffect(
     function () {
+      if (userRating) countRef.current = +countRef.current + 1;
+    },
+    [userRating]
+  );
+
+  useEffect(
+    function () {
       function callback(e) {
         if (e.code === "Escape") onCloseMovie();
         console.log("keypress");
@@ -208,6 +216,7 @@ function MovieDetails({ movieId, onCloseMovie, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countingRatingDecisions: countRef.current,
     };
     onAddWatched(newWatchedMovie);
     onCloseMovie();
