@@ -1,5 +1,5 @@
 import { logDOM } from "@testing-library/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CurrencyConverter from "./CurrencyConverter";
 import StarRating from "./StarRating";
 
@@ -14,6 +14,7 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   // fetch()
   //Api key 9b62ec01
+
   const [watched, setWatched] = useState(function () {
     const watched = JSON.parse(localStorage.getItem("watched"));
     return watched ? watched : [];
@@ -50,7 +51,7 @@ export default function App() {
         try {
           if (!query) {
             console.log("Search to see results");
-            throw new Error("Search to see results");
+            throw new Error("Hit enter to search for movies");
           }
 
           setIsLoading(true);
@@ -285,8 +286,19 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
+  const inputEl = useRef(null);
+  useEffect(function () {
+    document.addEventListener("keydown", function (e) {
+      if (document.activeElement === inputEl.current) return;
+      if (e.key === "Enter") {
+        inputEl.current.value = "";
+        inputEl.current.focus();
+      }
+    });
+  }, []);
   return (
     <input
+      ref={inputEl}
       className="search"
       type="text"
       placeholder="Search movies..."
